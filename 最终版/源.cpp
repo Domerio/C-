@@ -11,7 +11,7 @@ using namespace std;
 #include<cstring>
 
 //类型定义
-const int factor[] = { 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 };//加权因子 
+const int factor[] = { 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 };	//加权因子 
 const string A[] = {
 "11","12","13","14","15",//京、津、冀、晋、蒙
 "21","22","23",//辽、吉、黑
@@ -20,8 +20,8 @@ const string A[] = {
 "50","51","52","53","54",//渝、川、贵、云、藏 
 "61","62","63","64","65"//陕、甘、青、宁、新
 };//前两位
-const int checktable[] = { 1, 0, 10, 9, 8, 7, 6, 5, 4, 3, 2 };//校验值对应表 
-const string Class[] = { "程序设计","C++","英语","数据结构","Java","数学逻辑" };
+const int checktable[] = { 1, 0, 10, 9, 8, 7, 6, 5, 4, 3, 2 };					//校验值对应表 
+const string Class[] = { "程序设计","C++","英语","数据结构","Java","数学逻辑" };//课程常量
 //课程类
 struct course {
 	string coursename;
@@ -61,6 +61,10 @@ public:
 		for (int i = 0; i < 9; i++) {
 			cs[i].coursename = "#";
 			cs[i].grade = 0;
+		}
+		for (int i = 0; i < 9; i++)
+		{
+			this->allgrade += this->cs[i].grade;
 		}
 	}
 };
@@ -593,9 +597,19 @@ void time() {
 }
 //输入基本信息 + 数据校验
 void setBasic1(student a[]) {
-	int n = 0;
+	int n = ReadStu(a) + 1, i = 0;
 	cout << setw(17) << "请输入学号: ";
 	cin >> a[n].num; cout << endl;
+	while (i < ReadStu(a))//判断学生信息是否重复
+	{
+		if (a[n].num == a[i].num)
+		{
+			cout << "该 " << a[n].num << " 学号信息已被录入！\n请重新输入：" << endl;
+			cin >> a[n].num; cout << endl;
+			i = 0;		//归零
+		}
+		else i++;
+	}
 	while (a[n].num.length() != 10 || a[n].num.substr(0, 2) < "19" || a[n].num.substr(0, 2) > "22") {
 		//判断学号前两位是否是19，20，21，22 以及 学号位数是否正确
 		cout << "学号输入有误，请重新输入" << endl;
@@ -654,6 +668,7 @@ void setBasic1(student a[]) {
 		cin >> a[n].cs[i].grade;
 	}
 	}
+	a[n].allgrade = a[n].cs[0].grade + a[n].cs[1].grade + a[n].cs[2].grade;
 	cout << "您刚才录入的基本信息为:" << endl;
 	PSt(a[n]);
 	getfile(a, a[n].num);
@@ -663,12 +678,22 @@ void setBasic2(student a[]) {
 	int num = 0;
 	num = ReadSB(a);
 	cout << "此次批量录入的基本信息库为:" << endl;
-	int i = 0;
+	int i = 0, j = 0;
 	for (i = 0; i < num; i++) {
 		if (a[i].num == "0") break;
 		while (a[i].phone.length() != 11) {
 			cout << a[i].name << "电话号输入有误，请重新输入" << endl;
 			cin >> a[i].phone;
+		}
+		while (j < ReadStu(a))//判断学生信息是否重复
+		{
+			if (a[i].num == a[j].num)
+			{
+				cout << "该 " << a[i].num << " 学号信息已被录入！\n      请重新输入：" << endl;
+				cin >> a[i].num; cout << endl;
+				j = 0;		//归零
+			}
+			else i++;
 		}
 		while (a[i].num.length() != 10 || a[i].num.substr(0, 2) < "19" || a[i].num.substr(0, 2) > "22") {//判断学号前两位是否是19，20，21，22 以及 学号位数是否正确
 			cin >> a[i].num;
@@ -1025,7 +1050,7 @@ void num_mod3(student a[]) {
 		}
 		string h;
 		if (g > 1)
-			n = f[r-1];
+			n = f[r - 1];
 		else if (g == 1)
 			n = f[0];
 		cout << "请输入要修改学生的课程" << endl;
@@ -2456,11 +2481,7 @@ void grademenu(student a[]) {
 }
 //信息录入菜单
 void getmenu3(student a[]) {
-	cout << endl << " 请选择您想要执行的操作:" << endl;
-	cout << "	1.录入学生基本信息" << endl;
-	cout << "	0.其它操作" << endl;
-	int n;
-	cin >> n;
+	int n = 1;
 	while (n) {
 		getmenu1();
 		int m;
