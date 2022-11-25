@@ -74,16 +74,16 @@ public:
 	string ac;//账号 
 	string pw;//密码
 	string name;//姓名
-	string sex;//性别
+	//string sex;//性别
 	string idt;//身份 
-	string age;//年龄
+	//string age;//年龄
 	user() {//构造函数
 		ac = "#";
 		pw = "#";
 		name = "#";
-		sex = "#";
+		//sex = "#";
 		idt = "#";
-		age = "#";
+		//age = "#";
 	}
 };
 
@@ -286,9 +286,8 @@ int ReadUser(user b[])
 		fp >> b[num].ac
 			>> b[num].name
 			>> b[num].pw
-			>> b[num].sex
-			>> b[num].idt
-			>> b[num].age;
+			>> b[num].idt;
+			//>> b[num].age;
 		num++;
 	}
 	return num;
@@ -460,9 +459,7 @@ void getUser(user c)
 		file << c.ac << "   ";
 		file << c.name << "   ";
 		file << c.pw << "   ";
-		file << c.sex << "   ";
-		file << c.idt << "   ";
-		file << c.age << endl;
+		file << c.idt << "   "<<endl;
 		file.close();
 		if (c.idt == "老师") {
 			ofstream outfile("teacherm.txt", ios_base::app);
@@ -471,9 +468,7 @@ void getUser(user c)
 			outfile << c.ac << "   ";
 			outfile << c.name << "   ";
 			outfile << c.pw << "   ";
-			outfile << c.sex << "   ";
-			outfile << c.idt << "   ";
-			outfile << c.age << endl;
+			outfile << c.idt << "   "<<endl;
 
 			outfile.close();
 		}
@@ -484,9 +479,7 @@ void getUser(user c)
 			outfile << c.ac << "   ";
 			outfile << c.name << "   ";
 			outfile << c.pw << "   ";
-			outfile << c.sex << "   ";
-			outfile << c.idt << "   ";
-			outfile << c.age << endl;
+			outfile << c.idt << "   "<<endl;
 			outfile.close();
 		}
 		cout << "添加成功！" << endl;
@@ -506,9 +499,7 @@ void getUserc(user d[])
 		off << setiosflags(ios::left) << setw(13) << d[i].ac;
 		off << setw(10) << d[i].name;
 		off << setw(10) << d[i].pw;
-		off << setw(6) << d[i].sex;
 		off << setw(7) << d[i].idt;
-		off << setw(4) << d[i].age;
 		off << endl;
 	}
 	off.close();
@@ -2064,12 +2055,8 @@ void adduser(user c[]) {
 		cin >> c[i].name;
 		cout << "请输入密码: ";
 		cin >> c[i].pw;
-		cout << "请输入性别: ";
-		cin >> c[i].sex;
 		cout << "请输入身份:";
 		cin >> c[i].idt;
-		cout << "请输入年龄: ";
-		cin >> c[i].age;
 		getUser(c[i]);
 		cout << "是否继续添加：" << endl;
 		cout << "【1】是 【0】否" << endl;
@@ -2109,7 +2096,7 @@ void userliulan(user d[]) {
 	for (int j = 0; j < i - 1; j++)
 	{
 		if (d[j + 1].pw == "0")break;
-		cout << setiosflags(ios::left) << setw(13) << d[j].ac << setw(10) << d[j].name << setw(10) << d[j].pw << setw(6) << d[j].sex << setw(7) << d[j].idt << setw(4) << d[j].age << endl;
+		cout << setiosflags(ios::left) << setw(13) << d[j].ac << setw(10) << d[j].name << setw(10) << d[j].pw << setw(7) << d[j].idt << setw(4) << endl;
 	}
 	system("pause");
 }
@@ -2135,16 +2122,14 @@ void modifyYH(user c[]) {
 		fp >> c[i].ac
 			>> c[i].name
 			>> c[i].pw
-			>> c[i].sex
-			>> c[i].idt
-			>> c[i].age;
+			>> c[i].idt;
 		i++;
 	}//读取学生或老师信息
 	cout << "-------------可修改的的信息如下-------------" << endl;   //输出一个修改信息的菜单 
 	cout << "		1.姓名" << endl;
 	cout << "		2.密码" << endl;
-	cout << "		3.性别" << endl;
-	cout << "		4.年龄" << endl;
+	//cout << "		3.性别" << endl;
+	//cout << "		4.年龄" << endl;
 	cout << "		0.退出该界面" << endl;
 	cout << "-----------------------------------------" << endl;
 	cout << "请选择您要修改的信息类型：" << endl;
@@ -2183,17 +2168,17 @@ void modifyYH(user c[]) {
 					if (d[v].ac == x)
 						d[v].pw = y;
 				}break;
-			case 3:cout << "该用户原来的性别信息为" << c[n].sex << ". 请输入现在要修改为的性别信息：";
+			/*case 3:cout << "该用户原来的性别信息为" << c[n].sex << ". 请输入现在要修改为的性别信息：";
 				cin >> y; c[n].sex = y; cout << endl;
 				for (int v = 0; v < M; v++)
 					if (d[v].ac == x)
 						d[v].sex = y;
-				break;
-			case 4:cout << "该用户原来的年龄信息为" << c[n].age << ". 请输入现在要修改为的年龄信息：";
+				break;*/
+			/*case 4:cout << "该用户原来的年龄信息为" << c[n].age << ". 请输入现在要修改为的年龄信息：";
 				cin >> y;  c[n].age = y; cout << endl;
 				for (int v = 0; v < M; v++)
 					if (d[v].ac == x)	d[v].age = y;
-				break;
+				break;*/
 			}
 			cout << endl << "修改成功! 修改后的用户信息库如下" << endl << "-----------------------------------------------------------------------------------" << endl;
 			for (int j = 0; j < M; j++)
@@ -2203,9 +2188,7 @@ void modifyYH(user c[]) {
 					<< setw(13) << c[j].ac
 					<< setw(10) << c[j].name
 					<< setw(16) << c[j].pw
-					<< setw(6) << c[j].sex
-					<< setw(7) << c[j].idt
-					<< setw(4) << c[j].age << endl;
+					<< setw(7) << c[j].idt<< endl;
 			}
 			cout << "-----------------------------------------------------------------------------------" << endl;
 			cout << endl << "请问是否要保存修改后的数据库信息(1为是，0为否)请输入操作:" << endl;
@@ -2226,9 +2209,7 @@ void modifyYH(user c[]) {
 						outfile << setiosflags(ios::left) << setw(13) << c[i].ac;
 						outfile << setw(10) << c[i].name;
 						outfile << setw(10) << c[i].pw;
-						outfile << setw(6) << c[i].sex;
 						outfile << setw(7) << c[i].idt;
-						outfile << setw(4) << c[i].age;
 						outfile << endl;
 					}
 					outfile.close();
@@ -2247,9 +2228,7 @@ void modifyYH(user c[]) {
 						outfile << setw(13) << c[i].ac;
 						outfile << setw(10) << c[i].name;
 						outfile << setw(10) << c[i].pw;
-						outfile << setw(6) << c[i].sex;
 						outfile << setw(7) << c[i].idt;
-						outfile << setw(4) << c[i].age;
 						outfile << endl;
 					}
 					outfile.close();
@@ -2290,9 +2269,7 @@ void deleteYH(user c[]) {
 		fp >> c[i].ac
 			>> c[i].name
 			>> c[i].pw
-			>> c[i].sex
-			>> c[i].idt
-			>> c[i].age;
+			>> c[i].idt;
 		i++;
 	}
 	user d[M];
@@ -2342,9 +2319,7 @@ void deleteYH(user c[]) {
 					<< setw(13) << c[j].ac
 					<< setw(10) << c[j].name
 					<< setw(10) << c[j].pw
-					<< setw(6) << c[j].sex
-					<< setw(7) << c[j].idt
-					<< setw(4) << c[j].age;
+					<< setw(7) << c[j].idt;
 				cout << endl;
 			}
 			cout << "-----------------------------------------------------------------------------------" << endl;
@@ -2364,9 +2339,7 @@ void deleteYH(user c[]) {
 					outfile << setw(13) << c[i].ac;
 					outfile << setw(10) << c[i].name;
 					outfile << setw(16) << c[i].pw;
-					outfile << setw(6) << c[i].sex;
 					outfile << setw(7) << c[i].idt;
-					outfile << setw(4) << c[i].age;
 					outfile << endl;
 				}
 				outfile.close();
@@ -2383,9 +2356,7 @@ void deleteYH(user c[]) {
 					outfile << setw(13) << c[i].ac;
 					outfile << setw(10) << c[i].name;
 					outfile << setw(16) << c[i].pw;
-					outfile << setw(6) << c[i].sex;
 					outfile << setw(7) << c[i].idt;
-					outfile << setw(4) << c[i].age;
 					outfile << endl;
 				}
 				outfile.close();
@@ -2734,6 +2705,11 @@ void login(user b[], user c[], user d[], student a[]) {
 	int s = 0;
 	while (s == 0)
 	{
+		ofstream outfile("data.txt", ios::app);
+		if (!outfile) {
+			cout << "打开文件失败！" << endl;
+			return;
+		}
 		cout << "请输入账号:";
 		cin >> x;
 		int m = 0;
@@ -2749,35 +2725,21 @@ void login(user b[], user c[], user d[], student a[]) {
 				cin >> y;
 			log:				while (b[i].pw == y) {
 				s = 2;
+				
 				if (b[i].idt == "管理员")
 				{
-					ofstream outfile("data.txt", ios::app);
-					if (!outfile) {
-						cout << "打开文件失败！" << endl;
-						return;
-					}
 					outfile << "管理员" << x << "登录了教务管理系统！" << endl;
 					guanliyuanmenu(b, c, d, i, a);//调用管理员菜单 
 					return;
 				}
 				if (b[i].idt == "老师")
 				{
-					ofstream outfile("data.txt", ios::app);
-					if (!outfile) {
-						cout << "打开文件失败！" << endl;
-						return;
-					}
 					outfile << "老师" << x << "登录了教务管理系统！" << endl;
 					jiaoshimenu(a);//调用老师菜单 
 					return;
 				}
 				if (b[i].idt == "学生")
 				{
-					ofstream outfile("data.txt", ios::app);
-					if (!outfile) {
-						cout << "打开文件失败！" << endl;
-						return;
-					}
 					outfile << "学生" << x << "登录了教务管理系统！" << endl;
 					xueshengmenu(b, i, a);//调用学生菜单
 					return;
