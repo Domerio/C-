@@ -1,7 +1,5 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #define M 100
-
-using namespace std;
 #include<iostream>
 #include<fstream>
 #include<string>
@@ -9,6 +7,7 @@ using namespace std;
 #include<iomanip>
 #include"ctime"
 #include<cstring>
+using namespace std;
 
 //类型定义
 const int factor[] = { 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 };	//加权因子 
@@ -39,7 +38,6 @@ public:
 	string college;
 	string id;
 	string class_number;//班级号
-	double allgrade;
 	person() {
 		name = "无";
 		born = "无";
@@ -50,22 +48,19 @@ public:
 		college = "无";
 		id = "0";
 		class_number = "0";
-		allgrade = 0;
 	}
 };
 //学生类 -> 继承自person类
 class student :public person {
 public:
+	double allgrade;//总分
 	course cs[9];//九门课
 	student() {//构造函数
 		for (int i = 0; i < 9; i++) {
 			cs[i].coursename = "#";
 			cs[i].grade = 0;
 		}
-		for (int i = 0; i < 9; i++)
-		{
-			this->allgrade += this->cs[i].grade;
-		}
+		allgrade = 0;
 	}
 };
 //用户类
@@ -74,28 +69,23 @@ public:
 	string ac;//账号 
 	string pw;//密码
 	string name;//姓名
-	//string sex;//性别
 	string idt;//身份 
-	//string age;//年龄
 	user() {//构造函数
 		ac = "#";
 		pw = "#";
 		name = "#";
-		//sex = "#";
 		idt = "#";
-		//age = "#";
 	}
 };
-
 /*声明*/
 //从 studentlist.txt 中读取学生信息
-int ReadStu(student a[]);
+int ReadStu(person a[]);
 //从 用户信息.txt 中读取用户信息
 int ReadUser(user b[]);
 //从 SetBasic.txt 中读取信息
-int ReadSB(student b[]);
+int ReadSB(person b[]);
 // 学生信息输出
-void PSt(student a);
+void PSt(person a);
 //保存用户信息 向后添加
 void getUser(user c);
 //更改用户信息 覆盖
@@ -103,19 +93,19 @@ void getUserc(user d[]);
 //记录更改时间
 void time();
 //输入基本信息 + 数据校验
-void setBasic1(student a[]);
+void setBasic1(person a[]);
 //直接向 studentlist.txt 中添加信息
-void getfile(student a[], string i);
+void getfile(person a[], string i);
 //修改 studentlist.txt 中的信息，需要覆盖
-void getfile_cov(student a[]);
+void getfile_cov(person a[]);
 //导出到文件 学生全体
-void allgetfile(student a[]);
+void allgetfile(person a[]);
 //身份证校验
 bool RID(string MYID);
 //输入基本信息 + 数据校验
-void setBasic1(student a[]);
+void setBasic1(person a[]);
 //文件读取 + 数据校验
-void setBasic2(student a[]);
+void setBasic2(person a[]);
 //某位同学的某门成绩的录入 - 感觉更像成绩修改，带改
 void getgrade1(student a[]);
 
@@ -124,25 +114,25 @@ void getmenu1();
 //成绩录入菜单
 void grademenu(student a[]);
 //信息录入菜单
-void getmenu3(student a[]);
+void getmenu3(person a[]);
 //批量修改菜单 
-void momenu(student a[]);
+void momenu(person a[]);
 //修改成绩菜单
 void nummenu(student a[]);
 //实现输入给定学号，修改指定学生部分信息菜单
-void modify1(student a[]);
+void modify1(person a[]);
 //查询指定学生信息菜单
 void numfind(student a[]);
 //成绩统计菜单 
 void cjmenu(student a[]);
 //删除菜单
-void deletemenu(student a[]);
+void deletemenu(person a[]);
 //查询菜单 - 包括查询指定学生信息
 void findmenu(student a[]);
 //排序菜单
 void sortmenu(student a[]);
 //管理员操作菜单 
-void guanliyuanmenu(user b[], user c[], user d[], int i, student a[]);
+void guanliyuanmenu(user b[], user c[], user d[], int i, person a[]);
 //教师操作菜单 
 void jiaoshimenu(student a[]);
 //学生操作菜单
@@ -151,7 +141,7 @@ void xueshengmenu(user b[], int i, student a[]);
 //不同专业的课程导入
 void setcourse(student a[]);
 //批量修改信息
-void modification1(student a[], int m);
+void modification1(person a[], int m);
 //按照学号修改全部课程成绩
 void num_mod1(student a[]);
 //学号修改指定课程成绩
@@ -161,9 +151,9 @@ void num_mod3(student a[]);
 //修改日志写入
 void indata(string a, string b, string c);
 //按学生姓名查找 - 包含字段查询
-void findName(student a[]);
+void findName(person a[]);
 //按班级查找
-void findinfor(student a[]);
+void findinfor(person a[]);
 //查找某科目的成绩 - 输出符合条件学生的信息
 void select1(student a[]);
 //查询不及格课程数目
@@ -173,22 +163,22 @@ void zhuzhuangtu(int s[]);
 //统计成绩，由教师操作
 void tongjicj(student a[]);
 //按学号查询指定同学全部信息
-void search1(student a[]);
+void search1(person a[]);
 //按学号查询该学院全部同学信息
-void search2(student a[]);
+void search2(person a[]);
 //按学号查询指定同学全部成绩信息
 void search3(student a[]);
 //按学号查询指定同学指定课程的成绩
 void search4(student a[]);
 
 //删除班级
-void shanchu(student a[]);
+void shanchu(person a[]);
 //根据学号删除所在班级
-void alldelete(student a[]);
+void alldelete(person a[]);
 //按照学号删除指定学生
-void xuehao_shan(student a[]);
+void xuehao_shan(person a[]);
 //按照姓名删除指定学生
-void xingming_shan(student a[]);
+void xingming_shan(person a[]);
 
 //按照总成绩排序
 void sort(student a[]);
@@ -197,7 +187,7 @@ void sort01(student a[]);
 //按专业指定课程成绩降序 
 void zysort(student a[]);
 //管理员浏览学生基本信息
-void allliulan(student a[]);
+void allliulan(person a[]);
 //管理员添加用户信息
 void adduser(user c[]);
 
@@ -213,13 +203,13 @@ void modifyYH(user c[]);
 void deleteYH(user c[]);
 //注册用户 - 未增加 studentm.txt、和teacherm.txt 与用户信息同步
 void enroll(user b[]);
-void login(user b[], user c[], user d[], student a[]);
+void login(user b[], user c[], user d[], person a[]);
 
 int main() {
 	int m = -1;
 	int i = 0;
 	student s[M];
-	student a[M];
+	person a[M];
 	int num = 0;
 	num = ReadStu(a);
 	user b[M], c[M], d[M];
@@ -228,13 +218,12 @@ int main() {
 	return 0;
 }
 
-//函数体
-/*文件相关*/
-//从 studentlist.txt 中读取学生信息
-int ReadStu(student a[])
+/*函数体*/
+//从 studentlist.txt 中读取学生基本信息
+int ReadStu(person a[])
 {
+	string v = "#";
 	ifstream fin;
-	int i = 0;
 	int num = 0;
 	fin.open("studentlist.txt");
 	if (!fin.is_open())
@@ -251,19 +240,7 @@ int ReadStu(student a[])
 			>> a[num].phone
 			>> a[num].college
 			>> a[num].id
-			>> a[num].class_number
-			>> a[num].allgrade;
-		for (int j = 0; j < 9;)
-		{
-			fin >> a[num].cs[j].coursename;
-			if (a[num].cs[j].coursename == "#")
-				break;
-			else
-			{
-				fin >> a[num].cs[j].grade;
-				j++;
-			}
-		}
+			>> a[num].class_number >> v;
 		if (a[num].num == "0")
 			break;
 		num++;
@@ -287,13 +264,12 @@ int ReadUser(user b[])
 			>> b[num].name
 			>> b[num].pw
 			>> b[num].idt;
-			//>> b[num].age;
 		num++;
 	}
 	return num;
 }
-//从 SetBasic.txt 中读取信息
-int ReadSB(student b[])
+//从 SetBasic.txt 中读取学生基本信息
+int ReadSB(person b[])
 {
 	int n = 0;
 	ifstream fin;
@@ -309,21 +285,40 @@ int ReadSB(student b[])
 			>> b[n].college
 			>> b[n].id
 			>> b[n].class_number
-			>> b[n].allgrade
-			>> b[n].cs[0].coursename
-			>> b[n].cs[0].grade
-			>> b[n].cs[1].coursename
-			>> b[n].cs[1].grade
-			>> b[n].cs[2].coursename
-			>> b[n].cs[2].grade
 			>> v;
 		n++;
 	}
 	fin.close();
 	return n;
 }
-//将某学生的信息写入 studentlist.txt 文件之中 - 直接向后加
-void getfile(student a[], string i) {
+//读取学生成绩信息
+int ReadStudentGrade(student a[])
+{
+	int n = 0;
+	int i = 0;
+	ifstream fin;
+	fin.open("Grade.txt");
+	char v;
+	while (fin.peek() != EOF)
+	{
+		fin >> a[n].num >> a[n].name >> a[n].college >> a[n].spe >> a[n].class_number;
+		fin >> a[n].allgrade;
+		for (int i = 0; i < 9; i++)
+		{
+			fin >> a[n].cs[i].coursename;
+			if (a[n].cs[i].coursename == "#")
+			{
+				n++;
+				break;
+			}
+			fin >> a[n].cs[i].grade;
+		}
+	}
+	fin.close();
+	return n;
+}
+//将某学生的基本信息写入 studentlist.txt 文件之中 - 直接向后加
+void getfile(person a[], string i) {
 	int m = 0;
 	ofstream outfile("studentlist.txt", ios::app);
 	if (!outfile) {
@@ -341,7 +336,6 @@ void getfile(student a[], string i) {
 				break;
 			}
 		}
-		a[m].allgrade = a[m].cs[0].grade + a[m].cs[1].grade + a[m].cs[2].grade;
 		outfile << a[m].num << "  ";
 		outfile << a[m].name << "  ";
 		outfile << a[m].sex << "  ";
@@ -350,25 +344,14 @@ void getfile(student a[], string i) {
 		outfile << a[m].phone << "  ";
 		outfile << a[m].college << "  ";
 		outfile << a[m].id << "  ";
-		outfile << a[m].class_number << "  ";
-		outfile << a[m].allgrade << "  ";
-		for (int j = 0; j < 9; j++) {
-			outfile << a[m].cs[j].coursename << " "
-				<< a[m].cs[j].grade << " ";
-			if (a[m].cs[j + 1].coursename == "#")
-			{
-				outfile << "#" << endl;
-				break;
-			}
-		}
+		outfile << a[m].class_number << "  " << "#";
 		outfile << endl;
 		outfile.close();
-
 		cout << "保存成功！" << endl;
 	}
 }
 //修改 studentlist.txt 中的信息，需要覆盖
-void getfile_cov(student a[])
+void getfile_cov(person a[])
 {
 	cout << "是否要将信息保存到数据库？（1是0否）" << endl;
 	int n = -1;
@@ -384,7 +367,6 @@ void getfile_cov(student a[])
 		for (int i = 0; i < M; i++)
 		{
 			if (a[i].num == "0")   break;
-			a[i].allgrade = a[i].cs[0].grade + a[i].cs[1].grade + a[i].cs[2].grade;
 			outfile << a[i].num << "  ";
 			outfile << a[i].name << "  ";
 			outfile << a[i].sex << "  ";
@@ -393,17 +375,79 @@ void getfile_cov(student a[])
 			outfile << a[i].phone << "  ";
 			outfile << a[i].college << "  ";
 			outfile << a[i].id << "  ";
-			outfile << a[i].class_number << "  ";
-			outfile << a[i].allgrade << "  " << endl;
-			for (int j = 0; j < 9; j++)
+			outfile << a[i].class_number << "  " << "#";
+			outfile << endl;
+		}
+		outfile.close();
+		cout << "修改信息保存成功！" << endl;
+		system("pause");
+	}
+}
+//修改 Grade.txt 中的信息，需要覆盖
+void getfile_Grade_cov(student a[])
+{
+	cout << "是否要将信息保存到数据库？（1是0否）" << endl;
+	int n = -1;
+	cin >> n;
+	if (n)
+	{
+		ofstream outfile("Grade.txt");
+		if (!outfile)
+		{
+			cout << "失败！" << endl;
+			return;
+		}
+		for (int i = 0; i < M; i++)
+		{
+			if (a[i].num == "0")   break;
+			outfile << a[i].num << "  ";
+			outfile << a[i].name << "  ";
+			outfile << a[i].college << "  ";
+			outfile << a[i].spe << "  ";
+			outfile << a[i].class_number << "  " << a[i].allgrade << "  ";
+			for (int t = 0; t < 9; t++)
 			{
-				if (a[i].cs[j].coursename == "#")
-				{
-					outfile << "#" << endl;
+				if (a[i].cs[t].coursename == "#")
 					break;
-				}
-				outfile << a[i].cs[j].coursename << " " << a[i].cs[j].grade << " ";
+				outfile << a[i].cs[t].coursename << "  " << a[i].cs[t].grade << "  ";
 			}
+			outfile << "#";
+			outfile << endl;
+		}
+		outfile.close();
+		cout << "修改信息保存成功！" << endl;
+		system("pause");
+	}
+}
+//添加成绩信息到 Grade.txt 文件
+void getfile_Grade(student a[])
+{
+	cout << "是否要将信息保存到数据库？（1是0否）" << endl;
+	int n = -1;
+	cin >> n;
+	if (n)
+	{
+		ofstream outfile("Grade.txt", ios::app);
+		if (!outfile)
+		{
+			cout << "失败！" << endl;
+			return;
+		}
+		for (int i = 0; i < M; i++)
+		{
+			if (a[i].num == "0")   break;
+			outfile << a[i].num << "  ";
+			outfile << a[i].name << "  ";
+			outfile << a[i].college << "  ";
+			outfile << a[i].spe << "  ";
+			outfile << a[i].class_number << "  " << a[i].allgrade << "  ";
+			for (int t = 0; t < 9; t++)
+			{
+				if (a[i].cs[t].coursename == "#")
+					break;
+				outfile << a[i].cs[t].coursename << "  " << a[i].cs[t].grade << "  ";
+			}
+			outfile << "#";
 			outfile << endl;
 		}
 		outfile.close();
@@ -412,7 +456,7 @@ void getfile_cov(student a[])
 	}
 }
 //导出到文件 学生全体
-void allgetfile(student a[]) {
+void allgetfile(person a[]) {
 	ofstream outfile("studentlist.txt", ios::app);
 	if (!outfile)
 	{
@@ -421,25 +465,20 @@ void allgetfile(student a[]) {
 	cout << "是否保存信息，1为是，0为否，请输入:" << endl;
 	int n;
 	cin >> n;
-	system("cls");//清空之前的结果
+	system("cls");//清屏
 	if (n)
 	{
 		for (int i = 0; i < M; i++) {
 			if (a[i].num == "0")   break;
-			outfile << a[i].num << endl;
-			outfile << a[i].name << endl;
-			outfile << a[i].sex << endl;
-			outfile << a[i].spe << endl;
-			outfile << a[i].born << endl;
-			outfile << a[i].phone << endl;
-			outfile << a[i].college << endl;
-			outfile << a[i].id << endl;
-			outfile << a[i].class_number << endl;
-			for (int j = 0; j < 9; j++) {
-				if (a[i].cs[j].coursename == "#")   break;
-				outfile << a[i].cs[j].coursename << ' ' << a[i].cs[j].grade << endl;
-				if (a[i].cs[j + 1].coursename == "#")   break;
-			}
+			outfile << a[i].num << "  ";
+			outfile << a[i].name << "  ";
+			outfile << a[i].sex << "  ";
+			outfile << a[i].spe << "  ";
+			outfile << a[i].born << "  ";
+			outfile << a[i].phone << "  ";
+			outfile << a[i].college << "  ";
+			outfile << a[i].id << "  ";
+			outfile << a[i].class_number <<"  #" << endl;
 			cout << endl;
 		}
 		outfile.close();
@@ -459,7 +498,7 @@ void getUser(user c)
 		file << c.ac << "   ";
 		file << c.name << "   ";
 		file << c.pw << "   ";
-		file << c.idt << "   "<<endl;
+		file << c.idt << "   " << endl;
 		file.close();
 		if (c.idt == "老师") {
 			ofstream outfile("teacherm.txt", ios_base::app);
@@ -468,7 +507,7 @@ void getUser(user c)
 			outfile << c.ac << "   ";
 			outfile << c.name << "   ";
 			outfile << c.pw << "   ";
-			outfile << c.idt << "   "<<endl;
+			outfile << c.idt << "   " << endl;
 
 			outfile.close();
 		}
@@ -479,7 +518,7 @@ void getUser(user c)
 			outfile << c.ac << "   ";
 			outfile << c.name << "   ";
 			outfile << c.pw << "   ";
-			outfile << c.idt << "   "<<endl;
+			outfile << c.idt << "   " << endl;
 			outfile.close();
 		}
 		cout << "添加成功！" << endl;
@@ -504,9 +543,8 @@ void getUserc(user d[])
 	}
 	off.close();
 }
-
-// 学生信息输出
-void PSt(student a)
+// 学生基本信息输出 - 管理员
+void PSt(person a)
 {
 	if (a.num == "0")
 		return;
@@ -518,14 +556,25 @@ void PSt(student a)
 		<< setw(13) << " 电话:" << a.phone << endl
 		<< setw(13) << " 学院:" << a.college << endl
 		<< setw(13) << " 身份证号码:" << a.id << endl
-		<< setw(13) << " 班级编号:" << a.class_number << endl
-		<< setw(13) << "总成绩：" << a.allgrade << endl;
+		<< setw(13) << " 班级编号:" << a.class_number << endl;
+}
+//学生成绩输出 - 教师
+void PSG(student a) {
+	if (a.num == "0")
+		return;
+	cout << setw(13) << " 学号:" << a.num << endl
+		<< setw(13) << " 姓名:" << a.name << endl
+		<< setw(13) << " 学院:" << a.college << endl
+		<< setw(13) << " 专业:" << a.spe << endl
+		<< setw(13) << " 班级编号:" << a.class_number << endl;
 	for (int i = 0; i < 9; i++)
 	{
-		cout << setw(13) << a.cs[i].coursename << "：" << a.cs[i].grade << endl;
-		if (a.cs[i + 1].coursename == "#")   break;
+		if (a.cs[i].coursename == "#")
+			break;
+		cout << a.cs[i].coursename << "：" << a.cs[i].grade << endl;
 	}
 }
+
 //身份证号校验
 bool RID(string MYID) {
 	int b = 0;
@@ -583,7 +632,7 @@ void time() {
 	outfile.close();
 }
 //输入基本信息 + 数据校验
-void setBasic1(student a[]) {
+void setBasic1(person a[]) {
 	int n = ReadStu(a) + 1, i = 0;
 	cout << setw(17) << "请输入学号: ";
 	cin >> a[n].num; cout << endl;
@@ -591,7 +640,7 @@ void setBasic1(student a[]) {
 	{
 		if (a[n].num == a[i].num)
 		{
-			cout << "该 " << a[n].num << " 学号信息已被录入！\n请重新输入：" << endl;
+			cout << "该 " << a[n].num << " 学号信息已被录入！请重新输入：\n" << endl;
 			cin >> a[n].num; cout << endl;
 			i = 0;		//归零
 		}
@@ -622,46 +671,19 @@ void setBasic1(student a[]) {
 		cin >> a[n].id;
 	}
 	if ((a[n].id[16] - '0') % 2 == 0)//利用身份证号补充性别信息
-	{
 		a[n].sex = "女";
-	}
 	else if ((a[n].id[17] - '0') % 2 == 1)
 		a[n].sex = "男";
 
 	a[n].born = a[n].id.substr(6, 4) + '.' + a[n].id.substr(10, 2) + '.' + a[n].id.substr(12, 2);
 	int j = 0;
 	a[n].class_number = a[n].num.substr(0, 8);//利用学号补充班级编号信息
-	for (int i = 0; i < 3; i++)
-	{
-		cout << setw(17) << "请输入要录入的科目 ";
-		cin >> a[n].cs[i].coursename;
-		cout << endl;
-	s:		for (j = 0; j < 9; j++)
-	{
-		if (a[n].cs[i].coursename == Class[j])
-			break;
-	}
-	if (j == 9 && a[n].cs[i].coursename.compare(Class[8]) != 0)
-	{
-		cout << "查无此科目，请重新输入" << endl;
-		cin >> a[n].cs[i].coursename;
-		goto s;
-	}
-	cout << setw(17) << "请输入成绩: ";
-	cin >> a[n].cs[i].grade; cout << endl;
-	while (a[n].cs[i].grade > 100 || a[n].cs[i].grade < 0)
-	{
-		cout << "成绩错误，请重新输入！" << endl;
-		cin >> a[n].cs[i].grade;
-	}
-	}
-	a[n].allgrade = a[n].cs[0].grade + a[n].cs[1].grade + a[n].cs[2].grade;
 	cout << "您刚才录入的基本信息为:" << endl;
 	PSt(a[n]);
 	getfile(a, a[n].num);
 }
 //文件读取 + 数据校验
-void setBasic2(student a[]) {
+void setBasic2(person a[]) {
 	int num = 0;
 	num = ReadSB(a);
 	cout << "此次批量录入的基本信息库为:" << endl;
@@ -676,7 +698,7 @@ void setBasic2(student a[]) {
 		{
 			if (a[i].num == a[j].num)
 			{
-				cout << "该 " << a[i].num << " 学号信息已被录入！\n      请重新输入：" << endl;
+				cout << "该 " << a[i].num << " 学号信息已被录入！请重新输入：\n" << endl;
 				cin >> a[i].num; cout << endl;
 				j = 0;		//归零
 			}
@@ -694,49 +716,27 @@ void setBasic2(student a[]) {
 			cin >> a[i].id;
 		}
 		if ((a[i].id[17] - '0') % 2 == 0 && a[i].sex == "男")//信息错误
-		{
 			a[i].sex = "女";
-		}
 		else if ((a[i].id[17] - '0') % 2 == 1 && a[i].sex == "女")//信息错误
-		{
 			a[i].sex = "男";
-		}
 		if (a[i].born.substr(0, 4) != a[i].id.substr(6, 4))
 			a[i].born = a[i].id.substr(6, 4) + '.' + a[i].id.substr(10, 2) + '.' + a[i].id.substr(12, 2);
 		if (a[i].born.substr(5, 2) != a[i].id.substr(10, 2))
 			a[i].born = a[i].id.substr(6, 4) + '.' + a[i].id.substr(10, 2) + '.' + a[i].id.substr(12, 2);
 		if (a[i].born.substr(8, 2) != a[i].id.substr(12, 2))
 			a[i].born = a[i].id.substr(6, 4) + '.' + a[i].id.substr(10, 2) + '.' + a[i].id.substr(12, 2);
-		int j = 0;
-		for (int v = 0; v < 3; v++)
-		{
-		s1:		for (j = 0; j < 9; j++)
-		{
-			if (a[i].cs[v].coursename == Class[j])
-				break;
-		}
-		if (j == 9 && a[i].cs[v].coursename.compare(Class[8]) != 0)
-		{
-			cout << a[i].name << "的" << a[i].cs[v].coursename << "课程名输入有误，请重新输入" << endl;
-			cin >> a[i].cs[v].coursename;
-			goto s1;
-		}
-		while (a[i].cs[v].grade > 100 || a[i].cs[v].grade < 0)
-		{
-			cout << a[i].name << "的" << a[i].cs[v].grade << "的成绩输入有误，请重新输入" << endl;
-			cin >> a[i].cs[v].grade;
-		}
-		}
-		cout << endl << "------" <<
-			"第" << i + 1 << "位学生:" << "------------" << endl;
-		PSt(a[i]);
-		getfile(a, a[i].num);
 	}
+	cout << endl << "------" <<
+		"第" << i + 1 << "位学生:" << "------------" << endl;
+	PSt(a[i]);
+	getfile(a, a[i].num);
 }
-//某位同学的某门成绩的录入 - 感觉更像成绩修改，带改
+
+//某位同学的某门成绩的录入//修改
 void getgrade1(student a[]) {
 	int n = -1;
 	int m = -1;
+	ReadStudentGrade(a);
 	cout << "请输入要录入成绩的学生学号:";
 	string x;
 	cin >> x;//2151030306
@@ -746,8 +746,11 @@ void getgrade1(student a[]) {
 		{
 			n = i; break;
 		}
+		if (a[i].num == "0")
+			break;
 	}
-	if (n == -1) cout << "查无此人" << endl;
+	if (n == -1)
+		cout << "查无此人" << endl;
 	if (n != -1)
 	{
 		cout << "请输入要录入的科目:";
@@ -779,51 +782,12 @@ void getgrade1(student a[]) {
 				cout << a[n].cs[i].coursename << "  " << a[n].cs[i].grade << "  ";
 			}
 			cout << endl;
-			getfile_cov(a);
+			getfile_Grade_cov(a);
 		}
 	}
 }
-//不同专业的课程导入
-void setcourse(student a[]) {
-	int n, j = 0;
-	string s, cn;
-	cout << "是否输入课程？【1】是，【0】否" << endl;
-	cin >> n;
-	while (n) {
-		cout << "请输入班级编号：" << endl;
-		cin >> s;
-		while (n) {
-			cout << "请输入课程名称" << endl;
-			cin >> cn;
-			for (int i = 0; i < M; i++) {
-				if (a[i].num == "#") break;
-				if (a[i].class_number == s)
-					a[i].cs[j].coursename = cn;
-			}
-			j++;
-			cout << "是否继续输入课程？【1】是，【0】否" << endl;
-			cin >> n;
-		}
-		for (int i = 0; i < M; i++) {
-			if (a[i].num == "#") break;
-			if (a[i].class_number == s) {
-
-				cout << a[i].name << " ";
-
-				for (int j = 0; j < 9; j++) {
-					if (a[i].cs[j].coursename == "#") break;
-
-					cout << a[i].cs[j].coursename << endl;
-					cout << endl;
-				}
-			}
-		}
-		cout << "是否输入另一个班级课程？【1】是，【0】否" << endl;
-		cin >> n; j = 0;
-	}
-}
-//批量修改信息
-void modification1(student a[], int m) {//将y批量改为x 
+/*批量修改信息*/
+void modification1(person a[], int m) {//将y批量改为x 
 	int n = 0;
 	int jige = 0;
 	int flag;
@@ -862,14 +826,6 @@ void modification1(student a[], int m) {//将y批量改为x
 				a[n].class_number = x;
 				jige++;
 			}break;
-		case 4:
-			for (int i = 0; i < 9; i++) {
-				m1 = (a[n].cs[i].coursename);
-				if (m1 == y) {
-					a[n].cs[i].coursename = x;
-					jige++;
-				}
-			}break;
 		}
 	}
 	cout << "---------------------------------" << endl;
@@ -883,18 +839,16 @@ void modification1(student a[], int m) {//将y批量改为x
 		PSt(a[k]);
 		cout << "---------------------------------" << endl;
 	}
-
 	getfile_cov(a);
 	cout << "---------------------------------" << endl;
-
 }
-//按照学号修改全部课程成绩
+//按照学号修改全部课程成绩 - 教师
 void num_mod1(student a[]) {
 	int n = 0, num = 0;
 	string j;
 	cout << "请输入要修改学生的学号" << endl;
 	cin >> j;
-	num = ReadStu(a);
+	num = ReadStudentGrade(a);
 	for (n = 0; n < num; n++)
 		if (a[n].num == j) {//改数据
 			time();
@@ -921,20 +875,17 @@ void num_mod1(student a[]) {
 				}
 			}
 			cout << endl << " 修改后的学生信息为:" << endl;
-			PSt(a[n]);
-			outfile.open("data.txt", ios_base::app);
-			if (!outfile) {
-				cout << "打开文件失败！" << endl;
-			}
+			PSG(a[n]);
 			for (int i = 0; i < 9; i++)
 			{
 				if (a[n].cs[i].coursename == "#")
 					break;
-				outfile << "修改为:" << a[n].cs[0].grade << " " << a[n].cs[1].grade << " " << a[n].cs[2].grade << endl;
+				outfile << "修改为:";
+				outfile << a[n].cs[i].coursename << " " << a[n].cs[i].grade << "    ";
 				outfile.close();
 			}
 		}
-	getfile_cov(a);
+	getfile_Grade_cov(a);
 }
 //学号修改指定课程成绩
 void num_mod2(student a[]) {
@@ -942,14 +893,16 @@ void num_mod2(student a[]) {
 	string j;
 	cout << "请输入要修改学生的学号" << endl;
 	cin >> j;
-	int num = ReadStu(a);
+	int num = ReadStudentGrade(a);
 	for (n = 0; n < num; n++)
 		if (a[n].num == j) {
 			string h;
 			cout << "请输入要修改学生的课程" << endl;
 			cin >> h;
 			int m = 0;
-			for (; m < 3; m++) {
+			for (; m < 9; m++) {
+				if (a[n].cs[m].coursename == "#")
+					break;
 				if (a[n].cs[m].coursename == h) {
 					time();
 					ofstream outfile("data.txt", ios_base::app);
@@ -974,32 +927,27 @@ void num_mod2(student a[]) {
 			}
 			if (m == 3)cout << "输入课程有误,信息未被修改" << endl;
 			else {
-				cout << endl << "修改后的学生信息为:" << endl;
+				a[n].allgrade = 0;
+				for (int i = 0; i < 9; i++)
+					a[n].allgrade += a[n].cs[i].grade;
+				cout << endl << "修改后的成绩信息为:" << endl;
 				cout << setiosflags(ios::left) << setw(13) << a[n].num
 					<< setw(10) << a[n].name
-					<< setw(8) << a[n].sex
-					<< setw(20) << a[n].born
-					<< setw(30) << a[n].id
-					<< setw(25) << a[n].phone
-					<< setw(27) << a[n].college
 					<< setw(25) << a[n].spe
-					<< setw(15) << a[n].class_number
-					<< setw(9) << a[n].cs[0].grade + a[n].cs[1].grade + a[n].cs[2].grade
-					<< setw(12) << a[n].cs[0].coursename
-					<< setw(9) << a[n].cs[0].grade
-					<< setw(12) << a[n].cs[1].coursename
-					<< setw(9) << a[n].cs[1].grade
-					<< setw(12) << a[n].cs[2].coursename
-					<< setw(9) << a[n].cs[2].grade << endl;
+					<< setw(27) << a[n].college
+					<< setw(15) << a[n].class_number;
+				for (int t = 0; t < 9; t++)
+					cout << setw(12) << a[n].cs[t].coursename << setw(9) << a[n].cs[t].grade;
+				cout << a[n].allgrade << endl;
 			}
 		}
-	getfile_cov(a);
+	getfile_Grade_cov(a);
 }
 //姓名修改指定课程成绩
 void num_mod3(student a[]) {
 	string j;
 	int s;
-	int f[M];
+	int f[M] = { 0 };
 	for (int p = 0; p < M; p++) {
 		f[p] = 0;
 	}
@@ -1008,7 +956,7 @@ void num_mod3(student a[]) {
 	int n = 0;
 	int g = 0;
 	int r;
-	int num = ReadStu(a);
+	int num = ReadStudentGrade(a);
 	for (n = 0; n < num; n++)
 		if (a[n].name == j) {
 			f[g] = n;
@@ -1050,7 +998,7 @@ void num_mod3(student a[]) {
 				if (!outfile) {
 					cout << "打开文件失败！" << endl;
 				}
-				outfile << "学号" << a[n].num << "的" << a[n].cs[m].coursename << "成绩：" << a[n].cs[m].grade << endl;
+				outfile << "学号" << a[n].num << "的" << a[n].cs[m].coursename << "原成绩：" << a[n].cs[m].grade << endl;
 				outfile.close();
 				cout << "请输入修改后的课程成绩" << endl;
 				cin >> a[n].cs[m].grade;
@@ -1060,11 +1008,12 @@ void num_mod3(student a[]) {
 				}
 				outfile << "修改为：" << a[n].cs[m].grade << endl;
 				outfile.close();
+				a[n].allgrade = 0;
 				while (a[n].cs[m].grade < 0 || a[n].cs[m].grade>100) {
 					cout << a[n].name << "的" << a[n].cs[m].coursename << "不符合要求,请重新输入:" << endl;
 					cin >> a[n].cs[m].grade;
 				}
-				a[n].allgrade = a[n].cs[0].grade + a[n].cs[1].grade + a[n].cs[2].grade;
+				a[n].allgrade += a[n].cs[m].grade;
 				break;
 			}
 		}
@@ -1072,7 +1021,7 @@ void num_mod3(student a[]) {
 		else {
 			cout << endl << "修改后的学生信息为:" << endl;
 			PSt(a[n]);
-			getfile_cov(a);
+			getfile_Grade_cov(a);
 		}
 	}
 	else if (g == 0)
@@ -1093,7 +1042,7 @@ void indata(string a, string b, string c) {
 	outfile.close();
 }
 //实现输入给定学号，修改指定学生部分信息菜单
-void modify1(student a[]) {
+void modify1(person a[]) {
 	int m = 0;
 	int num = ReadStu(a);
 	int d = 1;
@@ -1105,9 +1054,7 @@ void modify1(student a[]) {
 	{
 		cout << "-------------修改学生部分信息-------------" << endl;   //输出一个修改信息的菜单 
 		cout << "1.姓名" << endl;
-		//cout << "2.出生日期" << endl;
 		cout << "2.专业" << endl;
-		//cout << "4.性别" << endl;
 		cout << "3.电话号码" << endl;
 		cout << "4.学院" << endl;
 		cout << "5.身份证" << endl;
@@ -1133,9 +1080,7 @@ void modify1(student a[]) {
 			switch (d)
 			{
 			case 1:cout << "将姓名" << a[n].name << "修改为："; cin >> y; indata(a[n].name, y, a[n].num); a[n].name = y; cout << endl; break;
-				//case 2:cout << "将出生日期" << a[n].born << "修改为："; cin >> y; indata(a[n].born, y, a[n].num); a[n].born = y; cout << endl; break;
 			case 2:cout << "将专业" << a[n].spe << "修改为："; cin >> y; indata(a[n].spe, y, a[n].num); a[n].spe = y; cout << endl; break;
-				//case 4:cout << "将性别" << a[n].sex << "修改为："; cin >> y; indata(a[n].sex, y, a[n].num); a[n].sex = y; cout << endl; break;
 			case 3:cout << "将电话号码" << a[n].phone << "修改为："; cin >> y; indata(a[n].phone, y, a[n].num); a[n].phone = y; cout << endl; break;
 			case 4:cout << "将学院" << a[n].college << "修改为："; cin >> y; indata(a[n].college, y, a[n].num); a[n].college = y; cout << endl; break;
 			case 5:cout << "将身份证" << a[n].id << "修改为：";
@@ -1165,7 +1110,7 @@ void modify1(student a[]) {
 		}
 	}
 }
-void findName(student a[]) {//查找的学生的姓名
+void findName(person a[]) {//查找的学生的姓名
 	int n = 0;
 	ifstream fin;
 	string P;
@@ -1228,7 +1173,7 @@ void findName(student a[]) {//查找的学生的姓名
 	}
 }
 //按班级查找
-void findinfor(student a[]) {//根据班级查全部同学信息或全部信息及成绩 
+void findinfor(person a[]) {//根据班级查全部同学信息或全部信息
 	int n = 0, c = 1, t;
 	string m;
 	int jige = 0;
@@ -1290,7 +1235,7 @@ void findinfor(student a[]) {//根据班级查全部同学信息或全部信息�
 void select1(student a[])
 {
 	int m = 0;
-	m = ReadStu(a);
+	m = ReadStudentGrade(a);
 	string x;//定义输入的那个课程的变量 
 	int y;//定义那个输入的分数变量 
 	int s = 1;
@@ -1332,12 +1277,12 @@ void select1(student a[])
 		cout << "1.是 0.否" << endl;
 		cin >> s;
 	}
-}//函数的大括号                                            
+}//函数的大括号     
 //查询不及格课程数目
 void select2(student a[])
 {//从文件读入 
 	int m = 0;
-	ReadStu(a);
+	ReadStudentGrade(a);
 	int b[9] = { 0 };//定义一个放某位同学的不及格课程的下标的数组 
 	int x;
 	int s = 1;
@@ -1363,7 +1308,7 @@ void select2(student a[])
 			{
 				t = 1;//若找到一位同学的不及格课程大于等于输入的指定值，就将t变为1 
 				cout << endl;
-				PSt(a[i]);
+				PSG(a[i]);
 				for (int p = 0; p < 9;)//从b[]数组中获取这位同学不及格课程的下标 
 				{
 					int c = b[p];
@@ -1473,7 +1418,7 @@ void zhuzhuangtu(int s[])
 	cout << endl;
 }
 //按学号查询指定同学全部信息
-void search1(student a[]) {
+void search1(person a[]) {
 	int s = 1;
 	int n = 0;
 	string j;
@@ -1503,7 +1448,7 @@ void search1(student a[]) {
 	}
 }
 //按学号查询该学院全部同学信息
-void search2(student a[]) {
+void search2(person a[]) {
 	int n = 0;
 	int k = 1;
 	string j;
@@ -1517,7 +1462,7 @@ void search2(student a[]) {
 			if (a[n].num.substr(0, 2) == j.substr(0, 2)) {
 				m = 1;
 				cout << endl << "学院第" << k << "个学生信息为:" << endl;
-				cout << setiosflags(ios::left) << setw(13) << a[n].num << setw(10) << a[n].name << setw(8) << a[n].sex << setw(20) << a[n].born << setw(30) << a[n].id << setw(25) << a[n].phone << setw(27) << a[n].college << setw(25) << a[n].spe << setw(15) << a[n].class_number << setw(4) << a[n].allgrade << setw(9) << a[n].cs[0].coursename << setw(3) << a[n].cs[0].grade << setw(9) << a[n].cs[1].coursename << setw(3) << a[n].cs[1].grade << setw(5) << a[n].cs[2].coursename << setw(3) << a[n].cs[2].grade << endl;
+				cout << setiosflags(ios::left) << setw(13) << a[n].num << setw(10) << a[n].name << setw(8) << a[n].sex << setw(20) << a[n].born << setw(30) << a[n].id << setw(25) << a[n].phone << setw(27) << a[n].college << setw(25) << a[n].spe << setw(15) << a[n].class_number << setw(4) << endl;
 				k++;
 			}
 		}
@@ -1550,7 +1495,8 @@ void search3(student a[]) {
 			if (a[n].num == "0") break;
 			if (a[n].num == j) {
 				cout << "查询的学生" << a[n].name << "的成绩信息为:" << endl;
-				cout << setiosflags(ios::left) << setw(9) << a[n].cs[0].coursename << setw(3) << a[n].cs[0].grade << setw(9) << a[n].cs[1].coursename << setw(3) << a[n].cs[1].grade << setw(5) << a[n].cs[2].coursename << setw(3) << a[n].cs[2].grade << endl;
+				/*cout << setiosflags(ios::left) << setw(9) << a[n].cs[0].coursename << setw(3) << a[n].cs[0].grade << setw(9) << a[n].cs[1].coursename << setw(3) << a[n].cs[1].grade << setw(5) << a[n].cs[2].coursename << setw(3) << a[n].cs[2].grade << endl;*/
+				PSG(a[n]);
 				m = 1;
 				break;
 			}
@@ -1611,8 +1557,8 @@ void search4(student a[]) {
 		cin >> s;
 	}
 }
-//删除班级
-void shanchu(student a[]) {
+//删除班级 - 管理员
+void shanchu(person a[]) {
 	int d = 1;
 	while (d) {
 		int m = 0;
@@ -1693,7 +1639,7 @@ void shanchu(student a[]) {
 	}
 }
 //根据学号删除所在班级
-void alldelete(student a[]) {
+void alldelete(person a[]) {
 	int s = 1;
 	int b = 0;
 	while (s) {
@@ -1738,15 +1684,7 @@ void alldelete(student a[]) {
 						<< setw(19) << a[n].phone
 						<< setw(27) << a[n].college
 						<< setw(26) << a[n].spe
-						<< setw(15) << a[n].class_number << setw(8)
-						<< "总成绩:" << setw(4) << a[n].allgrade
-						<< setw(6) << "成绩：";
-					for (int j = 0; j < 9; j++)
-					{
-						if (a[n].cs[j].coursename == "#")   break;
-						cout << setw(9) << a[n].cs[j].coursename << setw(5) << a[n].cs[j].grade;
-					}
-					cout << endl;
+						<< setw(15) << a[n].class_number << setw(8) << endl;
 				}
 				getfile_cov(a);
 			}
@@ -1767,7 +1705,7 @@ void alldelete(student a[]) {
 	}
 }
 //按照学号删除指定学生
-void xuehao_shan(student a[]) {
+void xuehao_shan(person a[]) {
 	int s = 1;
 	int b = 0;
 	int i = 0;
@@ -1797,12 +1735,7 @@ void xuehao_shan(student a[]) {
 			for (int j = 0; j < M; j++)
 			{
 				if (a[j].num == "0") break;
-				cout << a[j].num << "  " << a[j].name << "  " << a[j].sex << "  " << a[j].born << "  " << a[j].phone << "  " << a[j].college << "  " << a[j].id << "  " << a[j].class_number << "  " << a[j].allgrade << endl;
-				for (int i = 0; i < 9; i++)
-				{
-					if (a[j].cs[i].grade == 0) break; cout << a[j].cs[i].coursename << "  " << a[j].cs[i].grade << "  ";
-					if (a[i].cs[j].coursename == "#")   break;
-				}
+				cout << a[j].num << "  " << a[j].name << "  " << a[j].sex << "  " << a[j].born << "  " << a[j].phone << "  " << a[j].college << "  " << a[j].id << "  " << a[j].class_number << "  " << endl;
 				cout << endl;
 			}
 		}
@@ -1812,7 +1745,7 @@ void xuehao_shan(student a[]) {
 	getfile_cov(a);
 }
 //按照姓名删除指定学生
-void xingming_shan(student a[]) {
+void xingming_shan(person a[]) {
 	int s = 1;
 	while (s)
 	{
@@ -1880,7 +1813,7 @@ void sort(student a[]) {
 	double f[M] = { 0 }, s[M] = { 0 };
 	int n = 0;
 	double t = 0;
-	int num = ReadStu(a);
+	int num = ReadStudentGrade(a);
 	for (n = 0; n < num; n++)
 	{
 		f[n] = a[n].allgrade;
@@ -1907,7 +1840,6 @@ void sort(student a[]) {
 	for (int j = 0; j < n; j++) {
 		cout << a[(int)s[j]].name << "\t" << a[(int)s[j]].num << "   " << f[j] << endl;
 	}
-
 }
 //输入班级后按总成绩降序输出学生信息
 void sort01(student a[]) {
@@ -1952,10 +1884,6 @@ void sort01(student a[]) {
 		<< setw(11) << "姓名"
 		<< setw(6) << "排名"
 		<< setw(9) << "总成绩"
-		<< setw(9) << "性别"
-		<< setw(19) << "出生日期"
-		<< setw(32) << "身份证号码"
-		<< setw(19) << "联系电话"
 		<< setw(27) << "学院"
 		<< setw(26) << "专业"
 		<< setw(26) << "单科成绩"
@@ -1970,20 +1898,15 @@ void sort01(student a[]) {
 				<< setw(11) << a[(int)s[j]].name
 				<< setw(6) << mc
 				<< setw(9) << a[(int)s[j]].allgrade
-				<< setw(9) << a[(int)s[j]].sex
-				<< setw(19) << a[(int)s[j]].born
-				<< setw(32) << a[(int)s[j]].id
-				<< setw(19) << a[(int)s[j]].phone
 				<< setw(27) << a[(int)s[j]].college
-				<< setw(26) << a[(int)s[j]].spe
-				//<< setw(15) << a[s[j]].class_number
-				<< a[(int)s[j]].cs[0].coursename << ":"
-				<< setw(9) << a[(int)s[j]].cs[0].grade
-				<< a[(int)s[j]].cs[1].coursename << ":"
-				<< setw(9) << a[(int)s[j]].cs[1].grade
-				<< a[(int)s[j]].cs[2].coursename << ":"
-				<< setw(9) << a[(int)s[j]].cs[2].grade
-				<< endl;
+				<< setw(26) << a[(int)s[j]].spe;
+			for (int i = 0; i < 9; i++)
+			{
+				if (a[(int)s[j]].cs[i].coursename == "#")
+					break;
+				cout << setw(12) << a[(int)s[j]].cs[i].coursename << "：" << setw(9) << a[(int)s[j]].cs[i].grade;
+			}
+			cout << endl;
 		}
 	}
 }
@@ -2025,7 +1948,7 @@ void zysort(student a[]) {
 	}
 }
 //管理员浏览学生基本信息
-void allliulan(student a[]) {
+void allliulan(person a[]) {
 	cout << "学生信息为：" << endl;
 	for (int j = 0; j < M; j++)
 	{
@@ -2168,17 +2091,17 @@ void modifyYH(user c[]) {
 					if (d[v].ac == x)
 						d[v].pw = y;
 				}break;
-			/*case 3:cout << "该用户原来的性别信息为" << c[n].sex << ". 请输入现在要修改为的性别信息：";
-				cin >> y; c[n].sex = y; cout << endl;
-				for (int v = 0; v < M; v++)
-					if (d[v].ac == x)
-						d[v].sex = y;
-				break;*/
-			/*case 4:cout << "该用户原来的年龄信息为" << c[n].age << ". 请输入现在要修改为的年龄信息：";
-				cin >> y;  c[n].age = y; cout << endl;
-				for (int v = 0; v < M; v++)
-					if (d[v].ac == x)	d[v].age = y;
-				break;*/
+				/*case 3:cout << "该用户原来的性别信息为" << c[n].sex << ". 请输入现在要修改为的性别信息：";
+					cin >> y; c[n].sex = y; cout << endl;
+					for (int v = 0; v < M; v++)
+						if (d[v].ac == x)
+							d[v].sex = y;
+					break;*/
+					/*case 4:cout << "该用户原来的年龄信息为" << c[n].age << ". 请输入现在要修改为的年龄信息：";
+						cin >> y;  c[n].age = y; cout << endl;
+						for (int v = 0; v < M; v++)
+							if (d[v].ac == x)	d[v].age = y;
+						break;*/
 			}
 			cout << endl << "修改成功! 修改后的用户信息库如下" << endl << "-----------------------------------------------------------------------------------" << endl;
 			for (int j = 0; j < M; j++)
@@ -2188,7 +2111,7 @@ void modifyYH(user c[]) {
 					<< setw(13) << c[j].ac
 					<< setw(10) << c[j].name
 					<< setw(16) << c[j].pw
-					<< setw(7) << c[j].idt<< endl;
+					<< setw(7) << c[j].idt << endl;
 			}
 			cout << "-----------------------------------------------------------------------------------" << endl;
 			cout << endl << "请问是否要保存修改后的数据库信息(1为是，0为否)请输入操作:" << endl;
@@ -2447,7 +2370,7 @@ void grademenu(student a[]) {
 	}
 }
 //信息录入菜单
-void getmenu3(student a[]) {
+void getmenu3(person a[]) {
 	int n = 1;
 	while (n) {
 		getmenu1();
@@ -2465,7 +2388,7 @@ void getmenu3(student a[]) {
 	}
 }
 //批量修改菜单 
-void momenu(student a[]) {
+void momenu(person a[]) {
 	system("cls");
 	int n = 1;
 	while (n) {
@@ -2569,7 +2492,7 @@ void cjmenu(student a[]) {
 	}
 }
 //删除菜单
-void deletemenu(student a[]) {
+void deletemenu(person a[]) {
 	int n = 1;
 	while (n) {
 		system("cls");
@@ -2610,7 +2533,7 @@ void sortmenu(student a[]) {
 	}
 }
 //管理员菜单
-void guanliyuanmenu(user b[], user c[], user d[], int i, student a[]) {
+void guanliyuanmenu(user b[], user c[], user d[], int i, person a[]) {
 
 	int n = 0;
 	int s = 1;
@@ -2694,7 +2617,7 @@ void xueshengmenu(user b[], int i, student a[])
 	}
 }
 //登录界面
-void login(user b[], user c[], user d[], student a[]) {
+void login(user b[], user c[], user d[], person a[]) {
 	string x, y;
 	int p;
 	int i = 0;
@@ -2725,7 +2648,7 @@ void login(user b[], user c[], user d[], student a[]) {
 				cin >> y;
 			log:				while (b[i].pw == y) {
 				s = 2;
-				
+
 				if (b[i].idt == "管理员")
 				{
 					outfile << "管理员" << x << "登录了教务管理系统！" << endl;
@@ -2734,12 +2657,16 @@ void login(user b[], user c[], user d[], student a[]) {
 				}
 				if (b[i].idt == "老师")
 				{
+					student a[M];
+					ReadStudentGrade(a);
 					outfile << "老师" << x << "登录了教务管理系统！" << endl;
 					jiaoshimenu(a);//调用老师菜单 
 					return;
 				}
 				if (b[i].idt == "学生")
 				{
+					student a[M];
+					ReadStudentGrade(a);
 					outfile << "学生" << x << "登录了教务管理系统！" << endl;
 					xueshengmenu(b, i, a);//调用学生菜单
 					return;
