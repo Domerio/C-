@@ -125,16 +125,12 @@ void getmenu1();
 void grademenu(student a[]);
 //信息录入菜单
 void getmenu3(student a[]);
-//按学号导出信息
-void getmenu2(student a[]);
 //批量修改菜单 
 void momenu(student a[]);
 //修改成绩菜单
 void nummenu(student a[]);
 //实现输入给定学号，修改指定学生部分信息菜单
 void modify1(student a[]);
-//修改指定学生信息菜单
-void modimenu(student a[]);
 //查询指定学生信息菜单
 void numfind(student a[]);
 //成绩统计菜单 
@@ -2497,35 +2493,6 @@ void getmenu3(student a[]) {
 		cin >> n;
 	}
 }
-//按学号导出信息
-void getmenu2(student a[]) {
-	int c;
-	int n;
-	string m;
-	cout << "【1】单个保存" << endl << "【2】批量保存" << endl << "【0】取消" << endl;
-	cout << "请选择：" << endl;
-	cin >> c;
-	if (c == 1) {
-		system("cls");
-		cout << "请输入要保存的学号:" << endl;
-		cin >> m;
-		getfile(a, m);
-		for (int i = 1; i < M; i++) {
-			cout << "是否继续保存?" << endl << "【1】是，【0】否" << endl;
-			cin >> n;
-			if (n) {
-				cout << "请输入要保存的学号:" << endl;
-				cin >> m;
-				getfile(a, m);
-			}
-			else break;
-		}
-	}
-	else {
-		if (c == 2)  allgetfile(a);
-		else  system("cls");
-	}
-}
 //批量修改菜单 
 void momenu(student a[]) {
 	system("cls");
@@ -2784,16 +2751,34 @@ void login(user b[], user c[], user d[], student a[]) {
 				s = 2;
 				if (b[i].idt == "管理员")
 				{
+					ofstream outfile("data.txt", ios::app);
+					if (!outfile) {
+						cout << "打开文件失败！" << endl;
+						return;
+					}
+					outfile << "管理员" << x << "登录了教务管理系统！" << endl;
 					guanliyuanmenu(b, c, d, i, a);//调用管理员菜单 
 					return;
 				}
 				if (b[i].idt == "老师")
 				{
+					ofstream outfile("data.txt", ios::app);
+					if (!outfile) {
+						cout << "打开文件失败！" << endl;
+						return;
+					}
+					outfile << "老师" << x << "登录了教务管理系统！" << endl;
 					jiaoshimenu(a);//调用老师菜单 
 					return;
 				}
 				if (b[i].idt == "学生")
 				{
+					ofstream outfile("data.txt", ios::app);
+					if (!outfile) {
+						cout << "打开文件失败！" << endl;
+						return;
+					}
+					outfile << "学生" << x << "登录了教务管理系统！" << endl;
 					xueshengmenu(b, i, a);//调用学生菜单
 					return;
 				}
